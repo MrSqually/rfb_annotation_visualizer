@@ -1,11 +1,10 @@
 # RFB Annotation Visualizer
-# TODO: annotator caption
+
 # TODO: timeline of frames
 
 # ====================================|
 # Imports
 # ====================================|
-from abc import ABC
 import argparse
 import csv
 import os
@@ -54,6 +53,8 @@ class Visualizer:
         self.text_one = tk.Text(master=self.annotations)
         self.text_two = tk.Text(master=self.annotations)
         self.metrics = tk.Text(master=self.annotations)
+        self.t1_label = tk.Label(self.annotations, text=f"instance ID: {self.anno_one}")
+        self.t2_label = tk.Label(self.annotations, text=f"instance ID: {self.anno_two}")
         self.annotations.grid(row=10, column=3)
 
     # =====================|
@@ -96,9 +97,7 @@ class Visualizer:
 
     def get_annotations(self, annotator, guid, frame_num):
         """Retrieve the annotation json for a given anno/guid/frame"""
-        anno_path = (
-            f"data/rfb-r2-annotations.231117/{annotator}/{guid}.{frame_num}.json"
-        )
+        anno_path = f"{self.annotator_dir}/{annotator}/{guid}.{frame_num}.json"
         with open(anno_path) as f:
             json_obj = json.load(f)
         return json.dumps(json_obj, indent=4)
@@ -107,25 +106,25 @@ class Visualizer:
     # Event Helpers
     # =====================|
     def clear_frame(self):
-        """TODO: doc"""
+        """Clear content from text boxes to swap to different GUID / frame"""
         self.text_one.delete(1.0, tk.END)
         self.text_two.delete(1.0, tk.END)
         self.metrics.delete(1.0, tk.END)
 
     def load_page(self, event):
-        """TODO: doc"""
+        """Function for loading entire page"""
         self.clear_frame()
         self.load_frame_info(event)
         self.load_annotations(event)
 
     def load_frame_info(self, event):
-        """TODO: doc"""
+        """Function for loading frames"""
         guid = self.guid_dropdown.get()
         self.frame_dropdown.config(value=self.get_frames(guid))
         self.frame_dropdown.current(0)
 
     def load_annotations(self, event):
-        """TODO: doc"""
+        """Function for loading annotations"""
         guid = self.guid_dropdown.get()
         frame_num = self.frame_dropdown.get()
         self.clear_frame()
@@ -137,9 +136,13 @@ class Visualizer:
         )
         self.metrics.insert(tk.END, self.get_metrics(guid, frame_num))
 
-        self.text_one.grid(row=0, column=0)
-        self.text_two.grid(row=0, column=1)
-        self.metrics.grid(row=1, column=1)
+        self.t1_label.grid(row=0, column=0)
+        self.text_one.grid(row=1, column=0)
+
+        self.text_two.grid(row=1, column=1)
+        self.t2_label.grid(row=0, column=1)
+
+        self.metrics.grid(row=2, column=1)
 
         pic = ImageTk.PhotoImage(
             Image.open(f"{self.images_dir}/{guid}.{frame_num}.png").resize((500, 300))
@@ -147,7 +150,7 @@ class Visualizer:
 
         image = tk.Label(self.annotations, image=pic, text=f"{guid}.{frame_num}")
         image.image = pic
-        image.grid(row=1, column=0)
+        image.grid(row=2, column=0)
 
 
 # ====================================|
@@ -163,17 +166,17 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--data_directory",
         help="Directory containing human or model annotations",
-        default="./data/rfb-r2-annotations.231117/",
+        default="./data/rfb-r2-annotations.231117",
     )
     parser.add_argument(
         "--agreement_directory",
         help="Directory containing agreement metrics",
-        default="./results/",
+        default="./results",
     )
     parser.add_argument(
         "--image_directory",
         help="file location of frame images",
-        default="./data/images",
+        default="./images",
     )
     parser.add_argument(
         "--anno_one", help="First annotator instance ID number", default=20007
