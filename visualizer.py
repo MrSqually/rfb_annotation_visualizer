@@ -281,8 +281,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--image_directory",
         help="file location of frame images",
-        default="./images/images-R2-fewshot-credits", 
-    ) #changed default
+        default="./images",
+    )
     parser.add_argument(
         "--anno_one", help="First annotator instance ID number", default=20007
     )
