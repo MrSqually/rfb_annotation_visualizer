@@ -3,11 +3,10 @@
 File: RFB Annotation Visualizer
 V: 2
 v1 Author: Dean Cahill
-v2: Added buttons Jeremy Huey
+v2 Added Adjudication buttons: Jeremy Huey
 
 Known Issues:
-1. (v1) Upon opening, first image won't load. Perhaps adding a self.load_annotations(None)
-    # Reload annotations for the new frame , may help
+1. (v1) Upon opening, first image won't load. Perhaps adding a self.load_annotations(None) may help
 2. (v2) You will need to resize the window frame because the grid alignments are not right with the added buttons.
 3. Need explanation/readme of how to use UI/buttons to adjudicate.
 
@@ -282,7 +281,8 @@ def parse_arguments() -> argparse.Namespace:
         "--image_directory",
         help="file location of frame images",
         default="./images",
-    )
+        # default="./images/images-R2-fewshot-credits",
+    ) #changed default
     parser.add_argument(
         "--anno_one", help="First annotator instance ID number", default=20007
     )
