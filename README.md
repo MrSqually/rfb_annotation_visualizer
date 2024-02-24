@@ -69,7 +69,8 @@ visualizer after it opens.
 `aapb-annenv-role-filler-binder/raw_annotation_iaa_assessment/non_match_iaa_result_finder.py` to obtain a `.csv` of the 
 frames/entries where the two annotators do not match completely. (Non-"1.0, 1.0, 1.0, 1.0" lines). 
 5. That list gives you the frames you can go to manually in the visualizer and do adjudication for. 
-6. Make decisions for the adjudication. (e.g. deciding which frame should be the first readable frame and 
+6. Go to the visualizer repo, download the two sets of annotations and the image sets, and run `py visualizer.py`.
+7. Make decisions for the adjudication. (e.g. deciding which frame should be the first readable frame and 
 which are duplicates. Spelling, *s, etc.)
 
 ### Discussing Automatic Adjudication
